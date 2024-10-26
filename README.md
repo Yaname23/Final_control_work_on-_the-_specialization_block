@@ -38,6 +38,7 @@
 ![задание7  Создание БД](https://github.com/user-attachments/assets/0b47d675-afd1-4882-a9cb-9c71f5c408f5)
 
 8. Создать таблицы с иерархией из диаграммы в БД
+
 ![задание7 2 Создание таблицы друзья человека](https://github.com/user-attachments/assets/a5062dfb-1468-43b1-8b03-68160b9e4daf)
 ![задание7 3 Создание таблицы вьючные](https://github.com/user-attachments/assets/da08c880-0e87-4215-9453-c132092096f3)
 ![задание7 3 Создание таблицы домашние](https://github.com/user-attachments/assets/21b6a64c-023e-43dd-bc5b-2ded339dc032)
@@ -54,6 +55,7 @@
 ![10  удаление верблюдов](https://github.com/user-attachments/assets/9525b2d2-a75b-4ead-8b20-2e13f4c6683a)
 
 Объединить таблицы лошади, и ослы в одну таблицу.
+
 ![10 объединение](https://github.com/user-attachments/assets/fc7e98a5-94e7-4738-9d61-698c9574ec2e)
 
 11.Создать новую таблицу “молодые животные” в которую попадут все
