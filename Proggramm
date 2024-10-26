@@ -1,0 +1,37 @@
+"""Написать программу, имитирующую работу реестра домашних животных.
+В программе должен быть реализован следующий функционал:
+14.1 Завести новое животное
+14.2 определять животное в правильный класс
+14.3 увидеть список команд, которое выполняет животное
+14.4 обучить животное новым командамgggg
+14.5 Реализовать навигацию по меню"""
+import datetime
+count = 0
+
+hello = int(input("Выберите нужное:\n1.Добавить животное\n2.увидеть список команд которые выполняет животное\n3.Обучить новым командам\n4.Выход\n:"))
+
+def add_ani():
+    global count
+    count += 1
+    name = input("Введите имя животного: ")
+    animal_type = input("Введите вид животного\n:")
+    if animal_type.title() == 'Кошка' or 'Собака' or 'Кот' or 'Пес' or 'Пёс' or 'Хомяк' or 'Cat' or 'Dog' or 'Hamster':
+        species = 'Домашнее животное'
+    if animal_type.title() == 'Лошадь' or 'Конь' or 'Осёл' or 'Верблюд' or 'Horse' or 'Camel' or 'Donkey':
+        species = 'Вьючное животное'
+
+    commands = input("Введите комманду, которой обучено животное:  ")
+    birthday = input('Введите дату рождения животного в формате: *ДД.ММ.ГГГГ*.:  ')
+    try:
+        birthday = datetime.datetime.strptime(birthday, '%d.%m.%Y')
+        birthday = birthday.strftime("%d.%m.%Y")
+    except ValueError as e:
+        print('Формат даты не соответствует')
+
+    print(f"\nДобавлено животное:\n{species}\n{animal_type.title()}\nКличка: {name.title()}\nДата рождения: {birthday}\nЗнает команды: {commands}")
+
+
+
+
+if hello == 1:
+    add_ani()
