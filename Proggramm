@@ -6,18 +6,52 @@
 14.4 обучить животное новым командамgggg
 14.5 Реализовать навигацию по меню"""
 import datetime
+import os
+import json
+import path
+
 count = 0
 
-hello = int(input("Выберите нужное:\n1.Добавить животное\n2.увидеть список команд которые выполняет животное\n3.Обучить новым командам\n4.Выход\n:"))
+# hello = int(input("Выберите нужное:\n1.Добавить животное\n2.увидеть список команд которые выполняет животное\n3.Обучить новым командам\n4.Выход\n:"))
+class Animals:
+    def __init__(self,count: int, name: str, animal_type: str, species: str, birthday: str, commands: str):
+        self.count = count
+        self.name = name
+        self.animal_type = animal_type
+        self.species = species
+        self.birthday = birthday
+        self.commands = commands
+
+    def __str__(self):
+        return f'{self.count = },{self.species = }, {self.animal_type = }, {self.name = }, {self.birthday = }, {self.commands = }'
 
 def add_ani():
     global count
     count += 1
     name = input("Введите имя животного: ")
-    animal_type = input("Введите вид животного\n:")
-    if animal_type.title() == 'Кошка' or 'Собака' or 'Кот' or 'Пес' or 'Пёс' or 'Хомяк' or 'Cat' or 'Dog' or 'Hamster':
+    animal_guess= int(input("Выберите добавляемое животное:\n1.Кошка\n2.Собака\n3.Хомяк\n4.Лошадь\n5.Осёл\n6.Верблюд\n:"))
+    if animal_guess == 1:
+        animal_type = 'Кошка'
         species = 'Домашнее животное'
-    if animal_type.title() == 'Лошадь' or 'Конь' or 'Осёл' or 'Верблюд' or 'Horse' or 'Camel' or 'Donkey':
+
+    if animal_guess == 2:
+        animal_type = 'Собака'
+        species = 'Домашнее животное'
+
+    if animal_guess == 3:
+        animal_type = 'Хомяк'
+        species = 'Домашнее животное'
+
+    if animal_guess == 4:
+        animal_type = 'Лошадь'
+        species = 'Вьючное животное'
+
+    if animal_guess == 5:
+        animal_type = 'Осёл'
+        species = 'Вьючное животное'
+
+    if animal_guess == 6:
+        animal_type = 'Верблюд'
         species = 'Вьючное животное'
 
     commands = input("Введите комманду, которой обучено животное:  ")
@@ -27,11 +61,77 @@ def add_ani():
         birthday = birthday.strftime("%d.%m.%Y")
     except ValueError as e:
         print('Формат даты не соответствует')
+        exit()
+    print(f"\nДобавлено животное №{count}:\n{species}\n{animal_type.title()}\nКличка: {name.title()}\nДата рождения: {birthday}\nЗнает команды: {commands}")
+    return Animals(count, name, species, animal_type, birthday, commands)
+def show_commands():
+    with open("animals.json", "r", encoding='UTF-8') as my_file:
+        animals_json = my_file.read()
 
-    print(f"\nДобавлено животное:\n{species}\n{animal_type.title()}\nКличка: {name.title()}\nДата рождения: {birthday}\nЗнает команды: {commands}")
+    animals = json.loads(animals_json)
+
+    for key, value in animals.items():
+        for key2, value2 in value.items():
+            if key2 == 'commands':
+                print(f'{key} знает команды: {value2}')
 
 
+def new_commands():
+     with open("animals.json", "r", encoding='UTF-8') as my_file:
+        animals_json = my_file.read()
 
+     animals = json.loads(animals_json)
 
-if hello == 1:
-    add_ani()
+     for key, value in animals.items():
+         animals = "{key} =\t{value}".format(key=key, value=value)
+         name_ani = input('Напишите имя животного, который изучил новую команду: ')
+         if key == name_ani.title():
+             print(f'Команды у {'Маис'}: {value2}')
+             new_command = input(f'Введите новую команду для {key}: ')
+             animals[key]['commands'] = new_command
+             break
+         for key2, value2 in value.items():
+             if key2 == 'commands':
+                 print(f'{key} знает команды: {value2}')
+                 new_command = input(f'Введите новую команду для {key}: ')
+                 animals[key]['commands'] = new_command
+                 break
+
+     save_json('animals.json', animals)
+def load_json(path):
+    if os.path.exists(path):
+        with open(path, 'r', encoding='UTF-8') as file:
+            data = json.load(file)
+    else:
+        data = {}
+    return data
+
+def save_json(path, animal_db):
+    with open(path, 'w', encoding='UTF-8') as file:
+        json.dump(animal_db, file, indent=4, ensure_ascii=False)
+def menu():
+    while True:
+        hello = int(input("\nВыберите нужное:\n1.Добавить животное\n2.увидеть список команд которые выполняет животное\n3.Обучить новым командам\n4.Выход\n:"))
+        if hello == 1:
+            add_ani()
+            exit()
+        elif hello == 2:
+            show_commands()
+        elif hello == 3:
+            new_commands()
+        elif hello == 4:
+            print('До свидания!')
+            exit()
+menu()
+
+if __name__ == '__main__':
+    path = 'animals.json'
+    animal_db = load_json(path)
+    new_animal = add_ani()
+    if str(new_animal.name) in animal_db:
+        raise Exception('Пользователь c таким именем уже есть в реестре')
+    else:
+        animal_db[new_animal.name] = {'number': new_animal.name, 'species': new_animal.species,
+                                       'type': new_animal.animal_type, 'birthday': new_animal.birthday,
+                                       'commands': new_animal.commands}
+        save_json(path, animal_db)
