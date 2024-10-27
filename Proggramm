@@ -1,4 +1,4 @@
-"""Написать программу, имитирующую работу реестра домашних животных.
+""Написать программу, имитирующую работу реестра домашних животных.
 В программе должен быть реализован следующий функционал:
 14.1 Завести новое животное
 14.2 определять животное в правильный класс
@@ -77,27 +77,26 @@ def show_commands():
 
 
 def new_commands():
-     with open("animals.json", "r", encoding='UTF-8') as my_file:
-        animals_json = my_file.read()
+    with open('animals.json', 'r', encoding='UTF-8') as file:
+        animals = json.load(file)
 
-     animals = json.loads(animals_json)
+    for key, value in animals.items():
+        for key2, value2 in value.items():
+            if key2 == 'commands':
+                print(f'{key} знает команды: {value2}')
+    animal_to_learn = input('Как зовут животное, которому Вы хотите добавить команду?\nНапишите имя: ')
+    ani_name = animal_to_learn.title()
+    if key == ani_name:
+        command_to_learn = input('Какую команду вы хотите добавить? ')
 
-     for key, value in animals.items():
-         animals = "{key} =\t{value}".format(key=key, value=value)
-         name_ani = input('Напишите имя животного, который изучил новую команду: ')
-         if key == name_ani.title():
-             print(f'Команды у {'Маис'}: {value2}')
-             new_command = input(f'Введите новую команду для {key}: ')
-             animals[key]['commands'] = new_command
-             break
-         for key2, value2 in value.items():
-             if key2 == 'commands':
-                 print(f'{key} знает команды: {value2}')
-                 new_command = input(f'Введите новую команду для {key}: ')
-                 animals[key]['commands'] = new_command
-                 break
-
-     save_json('animals.json', animals)
+        for key, value in animals.items():
+            for key2, value2 in value.items():
+                if key2 == 'commands':
+                    print('Команда успешно добавлена!')
+                    with open('animals.json', 'w', encoding='UTF-8') as file:
+                        json.dump(animals, file, indent=4, ensure_ascii=False)
+                else:
+                     print('Такого животного нет в реестре.')
 def load_json(path):
     if os.path.exists(path):
         with open(path, 'r', encoding='UTF-8') as file:
